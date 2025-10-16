@@ -1,5 +1,6 @@
 package com.harshil.mongodbTut;
 
+import com.harshil.mongodbTut.entity.Address;
 import com.harshil.mongodbTut.entity.Order;
 import com.harshil.mongodbTut.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
@@ -24,8 +25,14 @@ public class MongodbTests {
 
             Order order = Order.builder()
                     .status("Delivered")
-                    .quantity(2*i)
-                    .totalPrice(1500.00 * i)
+                    .quantity(3*i)
+                    .totalPrice(3000.00 * i)
+                    .address(Address.builder()
+                            .line1("Line1 Address")
+                            .city("Surendranagar")
+                            .state("Gujarat")
+                            .zipcode("363020")
+                            .build())
                     .build();
 
             order = orderRepository.insert(order);

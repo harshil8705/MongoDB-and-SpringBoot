@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @Document(collection = "orders")
 @CompoundIndex(name = "quantity_status_index", def = "{ 'quantity': 1, 'status': 1 }")
+@CompoundIndex(name = "address_city_index", def = "{ 'address.city': 1 }")
 public class Order {
 
     @Id
@@ -32,5 +33,8 @@ public class Order {
 
     @LastModifiedDate
     private LocalDateTime modifiedAt;
+
+    @Indexed
+    private Address address;
 
 }
