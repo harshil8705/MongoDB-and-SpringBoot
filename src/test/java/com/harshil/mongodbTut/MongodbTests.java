@@ -2,7 +2,9 @@ package com.harshil.mongodbTut;
 
 import com.harshil.mongodbTut.entity.Address;
 import com.harshil.mongodbTut.entity.Order;
+import com.harshil.mongodbTut.entity.Product;
 import com.harshil.mongodbTut.repository.OrderRepository;
+import com.harshil.mongodbTut.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -18,15 +21,38 @@ public class MongodbTests {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @Test
     public void testCreateOrder() {
+
+        List<Product> productList = new ArrayList<>();
+
+            Product laptop = Product.builder()
+                    .name("HP ZBook Z5")
+                    .category("Laptop")
+                    .price(149999.00)
+                    .build();
+            laptop = productRepository.save(laptop);
+            productList.add(laptop);
+
+            Product phone = Product.builder()
+                    .name("IPhone 17 Pro Max Ultra")
+                    .category("Phone")
+                    .price(104999.00)
+                    .build();
+            phone = productRepository.save(phone);
+            productList.add(phone);
+
 
         for (int i = 1; i <= 10; i++) {
 
             Order order = Order.builder()
                     .status("Delivered")
                     .quantity(3*i)
-                    .totalPrice(3000.00 * i)
+                    .totalPrice(productList.stream().mapToDouble(Product::getPrice).sum() * i)
+                    .products(productList)
                     .address(Address.builder()
                             .line1("Line1 Address")
                             .city("Surendranagar")
@@ -34,20 +60,10 @@ public class MongodbTests {
                             .zipcode("363020")
                             .build())
                     .build();
-
-            order = orderRepository.insert(order);
+            order = orderRepository.save(order);
+            System.out.println(order);
 
         }
-
-        Order order = Order.builder()
-                .status("Processing")
-                .quantity(7)
-                .totalPrice(10500.00)
-                .build();
-
-        order = orderRepository.insert(order);
-
-        System.out.println(order);
 
     }
 

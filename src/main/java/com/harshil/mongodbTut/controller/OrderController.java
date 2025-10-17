@@ -3,7 +3,6 @@ package com.harshil.mongodbTut.controller;
 import com.harshil.mongodbTut.entity.Order;
 import com.harshil.mongodbTut.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +27,13 @@ public class OrderController {
     public ResponseEntity<List<Order>> getAllOrders() {
 
         return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.FOUND);
+
+    }
+
+    @GetMapping("/get/order/orderId/{orderId}")
+    public ResponseEntity<Order> getOrderById(@PathVariable String orderId) {
+
+        return new ResponseEntity<>(orderService.getOrderById(orderId), HttpStatus.FOUND);
 
     }
 

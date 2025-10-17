@@ -81,4 +81,12 @@ public class OrderService {
         return "Order with orderId: " + orderId + " deleted successfully!!";
 
     }
+
+    public Order getOrderById(String orderId) {
+
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("No such Order exists!!"));
+
+    }
+
 }
